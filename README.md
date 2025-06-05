@@ -71,7 +71,7 @@ If you’re running on lower-spec gear, swap in smaller embedding models or use 
 
 ---
 
-## 📁 Project Structure
+<details> <summary><strong>📁 Project Structure</strong></summary>
 
 ```
 LoreChain/
@@ -107,7 +107,7 @@ LoreChain/
 │       └── input_form.html
 
 ```
-
+</details>
 ---
 
 ## 💬 Configuration
