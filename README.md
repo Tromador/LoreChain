@@ -1,12 +1,5 @@
 # LoreChain
 
-[![License](https://img.shields.io/github/license/Tromador/LoreChain)](https://github.com/Tromador/LoreChain/blob/main/LICENSE)
-[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
-[![LangChain](https://img.shields.io/badge/langchain-enabled-green)](https://github.com/hwchase17/langchain)
-[![FAISS](https://img.shields.io/badge/FAISS-GPU--Enabled-brightgreen)](https://github.com/facebookresearch/faiss)
-[![Powered by OpenAI](https://img.shields.io/badge/powered%20by-OpenAI-000000?logo=openai&logoColor=white)](https://openai.com)
-[![Hugging Face](https://img.shields.io/badge/embeddings-HuggingFace-orange?logo=huggingface&logoColor=white)](https://huggingface.co)
-
 **LangChain-based persistent memory layer for creative projects**  
 Built for TTRPG lore, story development, and live session context retention — but adaptable to any domain where structured memory and semantic retrieval matter.
 
@@ -169,6 +162,13 @@ That stack is currently using Puppeteer to drive a ChatGPT web session, but will
 Built by [Tromador](https://github.com/Tromador), an engineer/game master solving actual problems with LLMs instead of playing prompt-jockey games.
 
 No fluff. No magic. Just real tools, running on real iron.
+
+[![License](https://img.shields.io/github/license/Tromador/LoreChain)](https://github.com/Tromador/LoreChain/blob/main/LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![LangChain](https://img.shields.io/badge/langchain-enabled-green)](https://github.com/hwchase17/langchain)
+[![FAISS](https://img.shields.io/badge/FAISS-GPU--Enabled-brightgreen)](https://github.com/facebookresearch/faiss)
+[![Powered by OpenAI](https://img.shields.io/badge/powered%20by-OpenAI-000000?logo=openai&logoColor=white)](https://openai.com)
+[![Hugging Face](https://img.shields.io/badge/embeddings-HuggingFace-orange?logo=huggingface&logoColor=white)](https://huggingface.co)
 
 ---
 
