@@ -71,7 +71,9 @@ If you’re running on lower-spec gear, swap in smaller embedding models or use 
 
 ---
 
-<details> <summary><strong>📁 Project Structure</strong></summary>
+## 📁 Project Structure.
+
+<details> <summary><strong> Click to expand </strong></summary>
 
 ```
 LoreChain/
