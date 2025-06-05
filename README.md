@@ -75,15 +75,37 @@ If you’re running on lower-spec gear, swap in smaller embedding models or use 
 
 ```
 LoreChain/
-├── .gitignore
-├── docs/                   # Component documentation
-├── lc_input_interface/     # Input relay + LangChain interface
-│   ├── input_providers/    # Web/manual/etc
-│   ├── lc_core/            # Core LangChain logic
-│   ├── lc_memory/          # Vector memory + session tracking
-│   ├── templates/          # Web UI templates
-│   └── langchain_relay.py  # Entry point to LC processing
-└── vectorstore/            # (Git-ignored) – FAISS index files
+├── README.md
+├── docs/
+│   ├── core.md
+│   ├── input_interface.md
+│   └── memory.md
+├── lc_input_interface/
+│   ├── app.py
+│   ├── langchain_relay.py
+│   ├── input_providers/
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   ├── live.py
+│   │   └── manual.py
+│   ├── lc_core/
+│   │   ├── __init__.py
+│   │   ├── bge_embedding.py
+│   │   ├── chain_manager.py
+│   │   ├── config.py
+│   │   ├── config_sample.py
+│   │   ├── memory_manager.py
+│   │   └── vectorstore/
+│   │       ├── index.faiss
+│   │       └── index.pkl
+│   ├── lc_memory/
+│   │   ├── __init__.py
+│   │   ├── memory_store.py
+│   │   └── session_manager.py
+│   ├── static/              # Reserved for CSS or JS (empty)
+│   └── templates/
+│       └── input_form.html
+
 ```
 
 ---
