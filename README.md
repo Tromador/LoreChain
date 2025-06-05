@@ -110,6 +110,7 @@ LoreChain/
 
 ```
 </details>
+
 ---
 
 ## 💬 Configuration
