@@ -7,75 +7,82 @@ Built for TTRPG lore, story development, and live session context retention — 
 
 ---
 
+## 🧠 Why This Exists
+
+Most LLM APIs — including OpenAI's — are stateless and short-term by design.  
+When working with prewritten transcripts or running multi-hour sessions, you’ll eventually hit context overflow and semantic drift.
+
+**LoreChain addresses this** by:
+- Persisting long-term memory across sessions
+- Retrieving only what’s relevant via semantic search
+- Allowing workflows that depend on continuity, world state, or structured recall
+
+It works equally well for:
+- 📜 TTRPG campaigns
+- 🛠 Project logs and AARs
+- 🧾 Multi-user shared knowledgebases
+- 🧑‍🏫 Courseware or onboarding systems
+
+---
+
 ## 🧩 Project Overview
 
 **LoreChain** provides:
 
 - 🔁 A modular LangChain interface with vectorstore-based memory
 - 🧠 Per-session context management using FAISS + HuggingFace embeddings
-- ⚡️ Full GPU acceleration via PyTorch + FAISS-GPU
-- 🌐 API interaction with OpenAI (GPT-4.1 or later) using `langchain-openai`
-- 🖥️ Web-based input interface (manually typed or programmatically streamed)
-
-Designed for tasks that require long-term knowledge retention, such as:
-
-- 🗺️ Worldbuilding & TTRPG adventure writing
-- ✍️ Multi-turn lore development
-- 🤖 Assistant-driven live narrative tools
+- 💾 Disk persistence and session filtering support
+- 🌐 API integration with OpenAI (via `langchain-openai`)
+- 🖥️ A lightweight Flask-based input UI for manual or automated entry
 
 ---
 
 ## 🚀 Requirements
 
 - Python 3.10+ (tested in WSL Ubuntu)
-- Working OpenAI API key (set via config)
-- CUDA 12.8+ GPU with PyTorch support (optional but recommended)
+- Working OpenAI API key (defined in config)
+- A FAISS build compiled against **NumPy 2.x**
+- Optionally: CUDA-enabled GPU for faster embedding
+
+> This project was tested on a GPU-enabled system using large embedding models, but will run correctly on CPU with smaller models.  
+> Embedding and vector search may be slower, but all functionality remains intact.
 
 ---
 
-## ⚠️ NumPy & FAISS Compatibility Warning
+## ⚠️ NumPy & FAISS Compatibility
 
 > You **must** use a version of FAISS that is compatible with **NumPy 2.x**
 
-### Why?
-
-- LangChain **requires NumPy 2.x**
-- Default FAISS builds from PyPI **are compiled against NumPy 1.x**
-- Mixing the two will **break your runtime immediately** (segfaults, memory issues, undefined behaviour)
+LangChain now requires NumPy 2. Default FAISS builds from PyPI are compiled against NumPy 1.x.  
+Mixing the two will result in segmentation faults or undefined behaviour.
 
 ### ✅ Solution
 
-This project assumes a **custom build of `faiss-gpu` compiled from source with NumPy 2.x support**.
+Build FAISS from source against NumPy 2.x with GPU enabled (if desired):
 
-We do **not** include a FAISS build — you’ll need to:
+```bash
+-DFAISS_ENABLE_GPU=ON
+```
 
-- ✅ [Build FAISS from source](https://github.com/facebookresearch/faiss/blob/main/INSTALL.md) with:
-  ```bash
-  -DFAISS_ENABLE_GPU=ON
-  ```
-  …and ensure it links against the **same** Python environment where NumPy 2.x is installed.
-
-> ❌ Do **not** downgrade to NumPy 1.x — LangChain will break.
+Do **not** downgrade NumPy — LangChain will break.
 
 ---
 
-## ⚙️ GPU Acceleration
+## ⚙️ GPU Acceleration (Optional)
 
-The system is designed to exploit modern GPU hardware:
+If running on a CUDA-capable GPU, LoreChain supports:
+- HuggingFace `bge-large-en-v1.5` embeddings (via `sentence-transformers`)
+- FAISS-GPU for fast vector similarity
+- Parallel processing alongside other tools like Whisper
 
-- HuggingFace `bge-large-en-v1.5` embeddings (very large model)
-- FAISS-GPU for vector similarity
-- Transcription + embedding can comfortably run in parallel
-
-> On an RTX 5090, we routinely hit <40% GPU load with both Whisper and embedding active.
-
-If you’re running on lower-spec gear, swap in smaller embedding models or use CPU FAISS instead (with appropriate compile flags).
+> On an RTX 5090, typical usage (embedding + transcript processing) uses under 40% GPU load.  
+> CPU fallback is supported, just slower. You can downsize the model if needed.
 
 ---
 
-## 📁 Project Structure.
+## 📁 Project Structure
 
-<details> <summary><strong> Click to expand </strong></summary>
+<details><summary><strong>Click to expand</strong></summary>
 
 ```
 LoreChain/
@@ -89,7 +96,6 @@ LoreChain/
 │   ├── langchain_relay.py
 │   ├── input_providers/
 │   │   ├── __init__.py
-│   │   ├── base.py
 │   │   ├── live.py
 │   │   └── manual.py
 │   ├── lc_core/
@@ -106,22 +112,21 @@ LoreChain/
 │   │   ├── __init__.py
 │   │   ├── memory_store.py
 │   │   └── session_manager.py
-│   ├── static/              # Reserved for CSS or JS (empty)
+│   ├── static/
 │   └── templates/
 │       └── input_form.html
-
 ```
+
 </details>
 
 ---
 
 ## 💬 Configuration
 
-Your OpenAI API key is stored here:
+OpenAI API key and runtime parameters are defined in:
 
 ```python
 # lc_core/config.py
-
 OPENAI_API_KEY = "<your-key-here>"
 ```
 
@@ -134,47 +139,48 @@ This file is `.gitignore`d by default.
 | Module         | Status       | Notes                                       |
 |----------------|--------------|---------------------------------------------|
 | LangChain Core | ✅ Complete   | OpenAI + vectorstore memory                 |
-| Memory Store   | ✅ Complete   | FAISS-GPU with per-session document tags    |
-| Embeddings     | ✅ Complete   | HuggingFace BGE-large on GPU                |
+| Memory Store   | ✅ Complete   | FAISS with per-session document tags        |
+| Embeddings     | ✅ Complete   | HuggingFace BGE-large or custom model       |
 | Input Web UI   | ✅ Working    | Manual and scripted input supported         |
-| LlamaIndex     | 🚧 Planned    | Lore preloading system (future enhancement) |
-| TTS / Output   | 🧪 Prototype  | TTS not yet looped back into LC             |
+| LlamaIndex     | 🚧 In Progress| Lore ingestion system (file-based preload)  |
+| TTS / Output   | 🧪 Prototype  | TTS pipeline under evaluation               |
 
 ---
 
-## 📢 Input Source: Discord Chat
+## 📢 Discord Input (Optional Integration)
 
-You can integrate LoreChain with [**Discord-Transcription-Stack**](https://github.com/Tromador/Discord-Transcription-Stack), which captures clean, diarised chat logs from live Discord voice channels.
+You can optionally integrate LoreChain with the [**Discord-Transcription-Stack**](https://github.com/Tromador/Discord-Transcription-Stack), which captures diarised voice transcripts from Discord voice channels.
 
-That stack is currently using Puppeteer to drive a ChatGPT web session, but will be adapted to use LoreChain directly via API injection in the next dev cycle.
+Currently, this stack uses Puppeteer to drive a ChatGPT session — but is designed to work with LoreChain via API relay in future revisions.
 
 ---
 
 ## ✨ Future Goals
 
-- LlamaIndex-based lore preload with smart retrieval
-- TTS module integration (e.g., Bark or Coqui)
-- Multi-user session context handling
-- Session switching, tagging, history management
+- LlamaIndex-based lore ingestion and file management
+- TTS (e.g. Bark, Coqui) for interactive playback
+- Multi-user memory separation and switching
+- Lore editing + AAR summarisation workflows
 
 ---
 
 ## 🤝 Attribution
 
-Built by [Tromador](https://github.com/Tromador), an engineer/game master solving actual problems with LLMs instead of playing prompt-jockey games.
+Built by [Tromador](https://github.com/Tromador), a game master and engineer solving real continuity problems with LLMs — not prompt games.
 
-No fluff. No magic. Just real tools, running on real iron.
+No hype. No marketing. Just real tools, running on real infrastructure.
 
 [![License](https://img.shields.io/github/license/Tromador/LoreChain)](https://github.com/Tromador/LoreChain/blob/main/LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![LangChain](https://img.shields.io/badge/langchain-enabled-green)](https://github.com/hwchase17/langchain)
-[![FAISS](https://img.shields.io/badge/FAISS-GPU--Enabled-brightgreen)](https://github.com/facebookresearch/faiss)
+[![FAISS](https://img.shields.io/badge/FAISS-GPU--Optional-brightgreen)](https://github.com/facebookresearch/faiss)
 [![Powered by OpenAI](https://img.shields.io/badge/powered%20by-OpenAI-000000?logo=openai&logoColor=white)](https://openai.com)
 [![Hugging Face](https://img.shields.io/badge/embeddings-HuggingFace-orange?logo=huggingface&logoColor=white)](https://huggingface.co)
 
 ---
 
 ## 📜 License
-BSD 3-Clause License — Permissive use, with **attribution required**.  
+
+BSD 3-Clause License — permissive use, **attribution required**.
 
 ---
