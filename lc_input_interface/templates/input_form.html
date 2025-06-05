@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LangChain Input Interface</title>
+    <style>
+        body {
+            font-size: 18px;
+            line-height: 1.5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+        textarea {
+            width: 100%;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        pre {
+            font-size: 16px;
+            white-space: pre-wrap; /* Wrap long lines */
+            word-wrap: break-word;
+            max-height: 300px;      /* Limit height */
+            overflow: auto;         /* Enable scrollbars */
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Submit Input to LangChain Core</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <textarea name="text_input" rows="10" placeholder="Enter text here"></textarea><br>
+            <input type="file" name="file_input"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+		<form method="POST" action="/save">
+			<input type="submit" value="Save Session">
+		</form>
+        {% if error %}
+        <div class="error">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+        {% if result %}
+        <h2>Output from LangChain Core:</h2>
+        <pre>{{ result }}</pre>
+        {% endif %}
+    </div>
+</body>
+</html>
