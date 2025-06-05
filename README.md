@@ -1,5 +1,7 @@
 # LoreChain
 
+<pre lang="markdown"> ![Project Status](https://img.shields.io/badge/status-WIP-yellow) </pre>
+
 **LangChain-based persistent memory layer for creative projects**  
 Built for TTRPG lore, story development, and live session context retention — but adaptable to any domain where structured memory and semantic retrieval matter.
 
