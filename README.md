@@ -2,10 +2,11 @@
 
 ![Project Status](https://img.shields.io/badge/status-WIP-yellow)
 
-By WIP I mean this readme is already at least somewhat wrong.
+By WIP I mean this readme is already wrong, as I've started the main memory store from scratch.
+I was just doing it wrong. 
 
 "Indentation-based syntax removes the freedom — and replaces it with fragility. Sure, it can look clean… but so does a plate of blancmange until you try to pick it up."
-- ChatGPT talking about Python
+\- ChatGPT talking about Python
 
 **LangChain-based persistent memory layer for creative projects**  
 Built for TTRPG lore, story development, and live session context retention — but adaptable to any domain where structured memory and semantic retrieval matter.
