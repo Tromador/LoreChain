@@ -4,7 +4,12 @@ from .memory_manager import VectorStoreMemory
 from .chain_manager import ChainManager
 from .config import DEFAULT_SESSION_ID
 
-from lc_memory import store_memory  # ← Sub-Task 3 injection
+# Sub-task 3 injection
+def write_to_memory(session_id: str, text: str) -> None:
+    # Deferred import avoids circular dependency
+    from lc_memory import store_memory
+    store_memory(session_id, text)  
+# End of Sub-task 3 injection
 
 _memory_manager = VectorStoreMemory()
 _chain_manager = ChainManager(_memory_manager)
@@ -18,7 +23,8 @@ def process_input(user_input: str, session_id: str = None) -> str:
     # Run input through chain
     result = _chain_manager.run(user_input)
 
-    # Store conversation to memory (via Sub-Task 3)
+    # Store conversation to memory (via Sub-Task 3) — delayed import
+    from lc_memory import store_memory
     store_memory(
         sid,
         f"User: {user_input}\nAI: {result}",
